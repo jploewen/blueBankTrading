@@ -5,14 +5,11 @@ export default function() {
 	var routes = Router();
 
 	// add middleware here
-	routes.get('/' ,function(req, res, next){
-		res.json({data: "hi there"});
-	})
 
 	routes.get('/api/v1', function(req, res, next){
 
 		res.send("Not defined");
-		});
+	});
 
 
 		routes.get('/api/v1/trades', function(req, res, next){
@@ -23,7 +20,7 @@ export default function() {
 		}
 		console.log("Sending request for trades");
 		request(opts, function(err, resp, body){
-			if(!err && resp.statusCode === 200){
+			if(!err){
 				console.log("Sucess!");
 				var trades = body.allTasks;
 				console.log("trades: ", trades);
@@ -42,7 +39,7 @@ export default function() {
 
 	});
 
-
+/*
 	routes.get('/api/v1/trades/:id', function(req, res, next){
 			var holdingID = "54";
 			if( req.params && req.params.hasOwnProperty( "id" ) ) {
@@ -71,7 +68,7 @@ export default function() {
 
 
 		});
-
+*/
 
 	return routes;
 }
