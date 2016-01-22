@@ -3,11 +3,46 @@ var Header = React.createClass({
   render: function() {
     return (
       <div className="bar bar-header bar-light">
+        <a href="#" className={"button icon-left ion-chevron-left button-clear button-dark" + (this.props.back === "true"? "": " hidden" )}></a>
         <h1 className="title">{this.props.text}</h1>
       </div>
     );
   }
 
+});
+
+var StockListItem = React.createClass({
+  getInitialState: function() {
+    return {
+      searchKey:""
+    };
+  },
+  clickHandler: function(event){
+
+    console.log("searchKey: ", this.props.stockName);
+    this.setState({
+      searchKey: this.props.stockName
+    });
+      this.props.clickHandler(this.props.stockName);
+
+
+  },
+  render: function() {
+    return (
+      <li className="table-view-cell media">
+        <a className='item item-icon-left' onClick={this.clickHandler}  >
+        <div className="row">
+            <i className={"col col-20 " +this.props.stockChange}></i>
+            <span className="col col-20">{this.props.stockName}</span>
+            <span className="col col-20">{this.props.stockPrice}</span>
+            <span className={ "col col-20 " +this.props.stockSign}>{this.props.stockPerc + "%"}</span>
+            <span className="col col-20"><i className="ion-chevron-right"></i></span>
+        </div>
+
+        </a>
+      </li>
+    );
+  }
 });
 
 
@@ -22,12 +57,8 @@ var StockList = React.createClass({
         sign = 'assertive';
       }
       return (
-        <a className='item item-icon-left' href='#' onClick={this.props.clicked.bind(this, fun)}>
-          <i className={change}></i>
-          <span>{fun.name}</span>
-          <span>{fun.price}</span>
-          <span className={sign}>{fun.perc + "%"}</span>
-        </a>
+          <StockListItem clickHandler={this.props.clicked} stockName={fun.name} stockPrice={fun.price} stockChange={change} stockSign={sign}
+            stockPerc={fun.perc} />
       )
     }.bind(this));
     return list;
@@ -41,9 +72,9 @@ var StockList = React.createClass({
   {name:'REWI', price: 98.20, perc: 1.1, change: 'up'},
   {name:'AFIC', price: 20.20, perc: 5.1, change: 'up'}]);
     return (
-      <div className="list">
+      <ul className="table-view">
         {stockList}
-      </div>
+      </ul>
     );
   }
 
@@ -51,12 +82,14 @@ var StockList = React.createClass({
 
 
 var HomePage = React.createClass({
-  
+
   render: function() {
     return (
-      <div>
+      <div className={"page " + this.props.position}>
         <Header text="My Stock Trading"/>
-        <StockList clicked={this.props.clickHandler} />
+        <div className="content">
+          <StockList clicked={this.props.clickHandler} />
+        </div>
       </div>
     );
   }
@@ -65,29 +98,50 @@ var HomePage = React.createClass({
 var Button = React.createClass({
   render: function() {
     return (
-      <div>
+
         <button className={this.props.btnClass}>{this.props.btnTitle}</button>
-      </div>
+
     );
   }
 })
 
 var StockPage = React.createClass({
   getInitialState: function() {
-        return {stockID: {}};
+        return {stock: {}}
     },
     componentDidMount: function() {
+      console.log("props: ", this.props);
+      this.props.service.findByName(this.props.stockID).done(function(result){
+        this.setState({stock: result});
+        console.log("state: ", this.state);
+      }.bind(this));
 
-            this.setState({stockID: this.props.stockID});
-
+    },
+    componentDidUpdate: function(prevProps, prevState) {
+      if(prevProps !== prevState.result)
     },
   render: function() {
     return (
-      <div>
-        <Header text="Stock Details" />
-        <div>{this.props.stockID}</div>
-        <Button btnTitle="Buy" btnClass="button button-stable" />
-        <Button btnTitle="Sell" btnClass="button button-dark" />
+      <div className={"page " + this.props.position}>
+        <Header text="Stock Details" back="true" />
+        <div className="card">
+          <ul className="table-view">
+            <li className="table-view-cell media">
+              <div className="media-body">
+                <h1>{this.state.stock.name} </h1>
+
+                </div>
+            </li>
+            <li className="table-view-cell media">
+              <div className="media-body">
+                <h1>{this.state.stock.price} </h1>
+
+                </div>
+            </li>
+          <Button btnTitle="Buy" btnClass="button button-stable " />
+          <Button btnTitle="Sell" btnClass="button button-dark " />
+          </ul>
+        </div>
       </div>
     );
   }
@@ -96,17 +150,18 @@ var App = React.createClass({
     mixins: [PageSlider],
     getInitialState: function() {
         return {
-            selectedStock: ''
+            stocks: [],
+            searchKey: ''
         }
     },
-    openNewPage: function(fun){
+    openNewPage: function(key){
+      console.log("KEY: ", key);
+      console.log("initial state: ", this.state);
       this.setState({
-        pages: [<HomePage clickHandler={this.openNewPage}/>],
-        selectedStock: fun.name
+        pages: [<HomePage clickHandler={this.openNewPage}/>]
       });
-      console.log("hey there.. you clicked me");
-      console.log("fun is: ", fun);
-      this.slidePage(<StockPage  stockID={fun.name} />)
+
+      this.slidePage(<StockPage  stockID={key} service={stockData}/>)
       console.log("You just set state to : ", this.state);
     },
     componentDidMount: function() {
@@ -114,7 +169,7 @@ var App = React.createClass({
             this.slidePage(<HomePage  clickHandler={this.openNewPage}/>);
         }.bind(this));
         router.addRoute('stocks/:id', function(id) {
-            this.slidePage(<StockPage  stockID={id} />);
+            this.slidePage(<StockPage  stockID={id} service={stockData}/>);
         }.bind(this));
         router.start();
       }
