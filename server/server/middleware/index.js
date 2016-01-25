@@ -1,6 +1,6 @@
 import { Router } from 'express';
 var request = require('request');
-
+var tradeURL = (process.env.GWURL || "http://172.16.22.242:8080") + "/Blaze/rest/trades";
 export default function() {
 	var routes = Router();
 
@@ -16,7 +16,7 @@ export default function() {
 	routes.get('/api/v1/trades', function(req, res, next){
 		//var opts = {url: 'http://172.16.22.17/trade/app'};
 		var opts = {
-			url:'http://cap-sg-stage-3.integration.ibmcloud.com:15324/Blaze/rest/trades/details?limit=10',
+			url:tradeURL+'/details',
 			json: true
 		}
 		console.log("/api/v1/trades About to request trades");
@@ -26,7 +26,8 @@ export default function() {
 				var trades = body.allTasks;
 				console.log("trades: ", trades);
 				if(!res.headerSent){
-					res.status(200).json(trades);
+					var json = {"trades": trades};
+					res.status(200).json(json);
 					return;
 				}
 				else{
@@ -51,7 +52,7 @@ export default function() {
 			console.log("/api/v1/trades/ " + holdingID);
 
 			var opts = {
-				url: 'http://cap-sg-stage-3.integration.ibmcloud.com:15324/Blaze/rest/trades/details?holdingID=' + holdingID,
+				url: tradeURL+'/details?holdingID=' + holdingID,
 				json: true
 			}
 
@@ -59,8 +60,9 @@ export default function() {
 				if(!err && resp.statusCode === 200){
 					console.log("Sucess!");
 					var holding = body.TASK;
+					var json = {"trade": holding};
 					if(!res.headerSent){
-						res.status(200).json(holding);
+						res.status(200).json(json);
 						return;
 					}
 					else {
@@ -73,6 +75,39 @@ export default function() {
 
 
 		});
+
+		routes.post('/api/v1/trades/buy', function(req,res,next){
+			if(!req.hasOwnProperty('body')){
+				console.error("Required post attributes missing");
+				next();
+			}
+			else if(!req.body.amount && !req.body.symbol){
+				console.error("Need required post attributes symbol and amount");
+				next();
+			}
+
+			var opts = {
+				url: tradeURL+"/buy",
+				json: true,
+				body: req.body,
+				method: "post",
+				headers: {
+					"Content-Type": "application/json"
+				}
+			}
+			request(opts, function(err, res, body){
+				if(!err && res.statusCode === 200){
+					console.log("Success buying trade");
+					var json = body;
+					console.log("RET: ", json);
+					res.status(200).json(json);
+					next();
+					return;
+				}
+				console.error("Problem buying trade: ", err);
+				res.status(500).send({"result": 1, "resultMessage": "Failed to buy trade"})
+			})
+		})
 
 	return routes;
 }
