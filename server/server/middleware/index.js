@@ -15,6 +15,7 @@ export default function() {
 
 	routes.get('/api/v1/trades', function(req, res, next){
 		//var opts = {url: 'http://172.16.22.17/trade/app'};
+		console.log("Sending request to ", tradeURL);
 		var opts = {
 			url:tradeURL+'/details',
 			json: true
@@ -50,7 +51,7 @@ export default function() {
 				holdingID = req.params.id;
 			}
 			console.log("/api/v1/trades/ " + holdingID);
-
+			console.log("Sending request to ", tradeURL);
 			var opts = {
 				url: tradeURL+'/details?holdingID=' + holdingID,
 				json: true
@@ -77,6 +78,7 @@ export default function() {
 		});
 
 		routes.post('/api/v1/trades/buy', function(req,res,next){
+			console.log("Sending request to ", tradeURL);
 			if(!req.hasOwnProperty('body')){
 				console.error("Required post attributes missing");
 				next();
