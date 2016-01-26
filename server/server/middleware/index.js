@@ -1,5 +1,6 @@
 import { Router } from 'express';
 var request = require('request');
+var cors = require('cors');
 var tradeURL = (process.env.GWURL || "http://172.16.22.242:8080") + "/Blaze/rest/trades";
 export default function() {
 	var routes = Router();
@@ -7,7 +8,7 @@ export default function() {
 	// add middleware here
 
 
-	routes.get('/api/v1', function(req, res, next){
+	routes.get('/api/v1', cors(),function(req, res, next){
 
 		res.send("Not defined");
 		});
@@ -43,7 +44,7 @@ export default function() {
 	});
 
 
-	routes.get('/api/v1/trades/:id', function(req, res, next){
+	routes.get('/api/v1/trades/:id', cors(), function(req, res, next){
 			var holdingID = "54";
 
 			if( req.params && req.params.hasOwnProperty( "id" ) ) {
@@ -77,7 +78,7 @@ export default function() {
 
 		});
 
-		routes.post('/api/v1/trades/buy', function(req,res,next){
+		routes.post('/api/v1/trades/buy', cors(),function(req,res,next){
 			console.log("Sending request to ", tradeURL);
 			if(!req.hasOwnProperty('body')){
 				console.error("Required post attributes missing");
