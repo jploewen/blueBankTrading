@@ -98,14 +98,15 @@ export default function() {
 					"Content-Type": "application/json"
 				}
 			}
-			request(opts, function(err, res, body){
-				if(!err && res.statusCode === 200){
+			request(opts, function(err, resp, body){
+				if(!err && resp.statusCode === 200){
 					console.log("Success buying trade");
 					var json = body;
 					console.log("RET: ", json);
-					res.status(200).json(json);
-					next();
-					return;
+					if(!res.headerSent)
+						res.status(200).json(json);{
+						return;
+					}
 				}
 				console.error("Problem buying trade: ", err);
 				res.status(500).send({"result": 1, "resultMessage": "Failed to buy trade"})
