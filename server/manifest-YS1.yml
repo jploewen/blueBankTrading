@@ -1,0 +1,12 @@
+applications:
+- path: .
+  memory: 128M
+  instances: 1
+  domain: stage1.mybluemix.net
+  name: my-trading
+  host: my-trading
+  disk_quota: 1024M
+  services:
+  - my-trading-AdvancedMobileAccess
+  - my-trading-imfpush
+  - my-trading-cloudantNoSQLDB
