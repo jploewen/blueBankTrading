@@ -8,11 +8,18 @@ export default function() {
 	// add middleware here
 
 
-	routes.get('/api/v1', cors(),function(req, res, next){
-
-		res.send("Not defined");
+	routes.get('/index.html', cors(),function(req, res, next){
+		var myhtmlpage = '<html><title>Hi There</title><body>Saying Have a nice day :)</body></html>';
+		res.send(myhtmlpage);
+		next();
 		});
 
+	routes.get('/flatline.html', cors(), function(req, res, next){
+		var myhtmlpage = '<html><title>Flat Line</title><body><h1>Flat Line</h1><br/>________________________ </body></html>';
+		res.send(myhtmlpage);
+		next();
+	})
+/*
 
 	routes.get('/api/v1/trades', function(req, res, next){
 		//var opts = {url: 'http://172.16.22.17/trade/app'};
@@ -111,7 +118,7 @@ export default function() {
 				console.error("Problem buying trade: ", err);
 				res.status(500).send({"result": 1, "resultMessage": "Failed to buy trade"})
 			})
-		})
+		})*/
 
 	return routes;
 }
