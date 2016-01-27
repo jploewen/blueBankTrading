@@ -118,5 +118,36 @@ export default function() {
 			})
 		})
 
+		api.get('/v1/mockbuy', cors(),function(req,res,next){
+			console.log("Sending POST to ", tradeURL , " from /v1/mockbuy");
+
+			var postBody = {
+				symbol: "s:0",
+				amount: "50"
+			}
+			var opts = {
+				url: tradeURL+"/buy",
+				json: true,
+				body: postBody,
+				method: "post",
+				headers: {
+					"Content-Type": "application/json"
+				}
+			}
+			request(opts, function(err, resp, body){
+				if(!err && resp.statusCode === 200){
+					console.log("Success buying trade");
+					var json = body;
+					console.log("RET: ", json);
+					if(!res.headerSent){
+						res.status(200).json(json);
+						return next();
+					}
+				}
+				console.error("Problem buying trade: ", err);
+				res.status(500).send({"result": 1, "resultMessage": "Failed to buy trade"})
+			})
+		})
+
 	return api;
 }
