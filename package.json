@@ -4,11 +4,13 @@
   "version": "1.0.0",
   "main": "server/server.js",
   "scripts": {
-    "start": "node ."
+    "start": "node .",
+    "install":"node install.js i"
   },
   "author": "Anton Aleksandrov",
   "dependencies": {
     "bms-mca-token-validation-strategy": "2.x",
+    "commander": "^2.9.0",
     "compression": "^1.0.3",
     "cors": "^2.5.2",
     "loopback": "^2.22.0",
