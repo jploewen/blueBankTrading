@@ -1,4 +1,4 @@
-var tradeURL = "http://192.168.59.103:8080/api/v1/trades";//"http://my-trading.stage1.mybluemix.net/api/v1/trades";
+var tradeURL = "http://my-trading.stage1.mybluemix.net/api/v1/trades";//"http://192.168.59.103:8080/api/v1/trades";
 var _trades = {};
 var tmpTrades = {};
 var _initCalled = false;

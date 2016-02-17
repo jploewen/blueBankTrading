@@ -47,13 +47,15 @@ updateStock(){
     StockStore.buyStock(json, function(res){
       if(res && res.result === 0){
         console.log("purchase was a success");
-        this.context.router.transitionTo('/purchased', {result: 0});
+
       }
       else {
         console.log("purchase didn't go through: ", res);
-        this.context.router.transitionTo('/purchased', {result: 1});
+        //this.context.router.transitionTo('/purchased', {result: 1});
       }
-    }.bind(this))
+    }.bind(this));
+    
+    this.context.router.transitionTo('/purchased', {result: 0});
   }
 
   render() {
