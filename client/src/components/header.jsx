@@ -22,6 +22,9 @@ var header = React.createClass({
         </ul>
         <ul className="nav navbar-nav pull-right">
           <li className="item">
+            <Link to="/">Blue Bank Trading</Link>
+          </li>
+          <li className="item">
               <div id="nav-icon" onClick={this.handleClick}>
                 <span></span>
                 <span></span>
