@@ -6,9 +6,5 @@ applications:
   name: my-trading
   host: my-trading
   disk_quota: 1024M
-  services:
-  - my-trading-AdvancedMobileAccess
-  - my-trading-imfpush
-  - my-trading-cloudantNoSQLDB
   env:
-    GWURL: http://cap-sg-prd-1.integration.ibmcloud.com:15721
+    GWURL: http://my-blaze-icdemo.mybluemix.net
