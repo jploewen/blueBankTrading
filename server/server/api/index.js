@@ -32,7 +32,7 @@ export default function() {
 				console.log("Sucess!");
 				var trades = body.allTasks;
 				console.log("trades: ", trades);
-				if(!res.headerSent){
+				if(!res.headersSent){
 					var json = {"trades": trades};
 					res.status(200).json(json);
 					return;
@@ -68,7 +68,7 @@ export default function() {
 					console.log("Sucess!");
 					var holding = body.TASK;
 					var json = {"trade": holding};
-					if(!res.headerSent){
+					if(!res.headersSent){
 						res.status(200).json(json);
 						return;
 					}
@@ -85,6 +85,7 @@ export default function() {
 
 		api.post('/v1/trades/buy', cors(),function(req,res,next){
 			console.log("Sending request to ", tradeURL);
+			console.log("/v1/trades/buy body: ", req.body);
 			if(!req.hasOwnProperty('body')){
 				console.error("Required post attributes missing");
 				next();
@@ -108,7 +109,7 @@ export default function() {
 					console.log("Success buying trade");
 					var json = body;
 					console.log("RET: ", json);
-					if(!res.headerSent)
+					if(!res.headersSent)
 						res.status(200).json(json);{
 						return;
 					}
@@ -139,7 +140,7 @@ export default function() {
 					console.log("Success buying trade");
 					var json = body;
 					console.log("RET: ", json);
-					if(!res.headerSent){
+					if(!res.headersSent){
 						res.status(200).json(json);
 						return next();
 					}

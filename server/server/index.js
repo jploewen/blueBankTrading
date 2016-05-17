@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 import db from './db';
 import middleware from './middleware';
 import api from './api';
+import path from 'path';
 
 var app = express();
 app.server = http.createServer(app);
@@ -26,7 +27,7 @@ db( λ => {
 
 	// api router
 	app.use('/api', api());
-
+	app.use("/",express.static(path.join(__dirname, 'client')));
 	app.server.listen(process.env.PORT || 8080);
 
 	console.log(`Started on port ${app.server.address().port}`);

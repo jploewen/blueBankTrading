@@ -3,12 +3,8 @@ applications:
   memory: 128M
   instances: 1
   domain: stage1.mybluemix.net
-  name: my-trading
-  host: my-trading
+  name: bbtrading
+  host: bbtrading
   disk_quota: 1024M
-  services:
-  - my-trading-AdvancedMobileAccess
-  - my-trading-imfpush
-  - my-trading-cloudantNoSQLDB
   env:
-    GWURL: http://cap-sg-prd-1.integration.ibmcloud.com:15721
+    GWURL: http://http://my-blaze-icdemo.mybluemix.net
