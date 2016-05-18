@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 import db from './db';
 import middleware from './middleware';
 import api from './api';
+import blaze from './blaze';
 import path from 'path';
 
 var app = express();
@@ -21,12 +22,12 @@ app.use(bodyParser.json({
 
 // connect to db
 db( λ => {
-
 	// internal middleware
 	app.use(middleware());
 
 	// api router
 	app.use('/api', api());
+	app.use('/Blaze', blaze());
 	app.use("/",express.static(path.join(__dirname, 'client')));
 	app.server.listen(process.env.PORT || 8080);
 

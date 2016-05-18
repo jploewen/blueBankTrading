@@ -5,7 +5,7 @@ import cors from 'cors';
 
 
 export default function() {
-	var tradeURL = (process.env.GWURL || "http://172.16.22.242:8080") + "/Blaze/rest/trades";
+	var tradeURL = (process.env.GWURL || "http://127.0.0.1:8080") + "/Blaze/rest/trades";
 	var api = Router();
 
 	// mount the facets resource
@@ -109,8 +109,8 @@ export default function() {
 					console.log("Success buying trade");
 					var json = body;
 					console.log("RET: ", json);
-					if(!res.headersSent)
-						res.status(200).json(json);{
+					if(!res.headersSent){
+						res.status(200).json(json);
 						return;
 					}
 				}
