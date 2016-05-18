@@ -7,6 +7,7 @@ import middleware from './middleware';
 import api from './api';
 import blaze from './blaze';
 import path from 'path';
+import images from './images';
 
 var app = express();
 app.server = http.createServer(app);
@@ -29,6 +30,7 @@ db( λ => {
 	app.use('/api', api());
 	app.use('/Blaze', blaze());
 	app.use("/",express.static(path.join(__dirname, 'client')));
+	app.use('/images', images());
 	app.server.listen(process.env.PORT || 8080);
 
 	console.log(`Started on port ${app.server.address().port}`);
