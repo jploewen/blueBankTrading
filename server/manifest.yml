@@ -3,8 +3,8 @@ applications:
   memory: 128M
   instances: 1
   domain: mybluemix.net
-  name: my-trading
-  host: my-trading
+  name: 'Blue Bank Trading'
+  host: bbtrading
   disk_quota: 1024M
   env:
-    GWURL: http://my-blaze-icdemo.mybluemix.net
+    GWURL: http://bbtrading.mybluemix.net
