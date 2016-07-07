@@ -118,7 +118,7 @@ export default function() {
 						res.status(200).json(json);
 
 					}
-					return next();
+					return;
 				}
 				console.error("Problem buying trade: ", err);
 				if(!res.headersSent){
