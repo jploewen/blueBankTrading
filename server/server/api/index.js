@@ -35,11 +35,11 @@ export default function() {
 				if(!res.headersSent){
 					var json = {"trades": trades};
 					res.status(200).json(json);
-					return;
 				}
 				else{
 					console.error("Headers already sent");
 				}
+				return next();
 			}
 			console.log("Error ", err);
 			if(!res.headersSent){
@@ -72,11 +72,12 @@ export default function() {
 					var json = {"trade": holding};
 					if(!res.headersSent){
 						res.status(200).json(json);
-						return;
+
 					}
 					else {
 						console.error("Headers already sent");
 					}
+					return next();
 				}
 				console.log("Error ", err);
 				if(!res.headersSent){
@@ -115,8 +116,9 @@ export default function() {
 					console.log("RET: ", json);
 					if(!res.headersSent){
 						res.status(200).json(json);
-						return;
+
 					}
+					return next();
 				}
 				console.error("Problem buying trade: ", err);
 				if(!res.headersSent){
@@ -156,8 +158,9 @@ export default function() {
 					console.log("RET: ", json);
 					if(!res.headersSent){
 						res.status(200).json(json);
-						return;
+
 					}
+					return next();
 				}
 				console.error("Problem buying trade: ", err);
 				if(!res.headersSent){
@@ -191,8 +194,9 @@ export default function() {
 					console.log("RET: ", json);
 					if(!res.headersSent){
 						res.status(200).json(json);
-						return next();
+
 					}
+					return next();
 				}
 				console.error("Problem buying trade: ", err);
 				if(!res.headersSent){
