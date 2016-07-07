@@ -77,7 +77,7 @@ var TradeDetail = React.createClass({
     this.setState({trade: TradeStore.find(this.props.params.id)});
   },
   handleBuyClick:function(event){
-    api.buy({"amount": 4, "symbol": "s:0"});
+    api.buy({"amount": "4", "symbol": "s:0"});
     this.openModal();
   },
   openModal:function(){

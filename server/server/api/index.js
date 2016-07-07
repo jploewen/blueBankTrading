@@ -89,8 +89,8 @@ export default function() {
 		});
 
 		api.post('/v1/trades/buy', cors(),function(req,res,next){
-			console.log("Sending request to ", tradeURL);
-			console.log("/v1/trades/buy body: ", req.body);
+			console.log("POST Sending request to ", tradeURL);
+			console.log("POST /v1/trades/buy body: ", req.body);
 			if(!req.hasOwnProperty('body')){
 				console.error("Required post attributes missing");
 				if(!res.headersSent){
@@ -134,8 +134,8 @@ export default function() {
 		});
 
 		api.put('/v1/trades/:id', cors(),function(req,res,next){
-			console.log("Sending request to ", tradeURL);
-			console.log("/v1/trades/id body: ", req.body);
+			console.log("PUT Sending request to ", tradeURL);
+			console.log("PUT /v1/trades/id body: ", req.body);
 			if(!req.params && !req.params.hasOwnProperty('id')){
 				console.error(("Required PUT attribute missing: id"));
 			}
@@ -143,12 +143,12 @@ export default function() {
 			if(!req.hasOwnProperty('body')){
 				console.error("Required PUT attributes missing");
 				res.status(500).send({"result": 1, "resultMessage": "Failed to update trade Required PUT attributes missing"})
-				return next();
+				return; //next();
 			}
 			else if(!req.body.amount && !req.body.symbol){
 				console.error("Need required PUT attributes symbol and amount");
 				res.status(500).send({"result": 1, "resultMessage": "Failed to update trade Need required PUT attributes symbol and amount"})
-				return next();
+				return;// next();
 			}
 			var id = req.params.id;
 
@@ -171,7 +171,7 @@ export default function() {
 						res.status(200).json(json);
 
 					}
-					return next();
+					return; //next();
 				}
 				console.error("Problem buying trade: ", err);
 				if(!res.headersSent){
