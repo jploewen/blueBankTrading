@@ -133,6 +133,7 @@ export default function() {
 			if(!req.params && !req.params.hasOwnProperty('id')){
 				console.error(("Required PUT attribute missing: id"));
 			}
+
 			if(!req.hasOwnProperty('body')){
 				console.error("Required PUT attributes missing");
 				next();
@@ -141,16 +142,18 @@ export default function() {
 				console.error("Need required PUT attributes symbol and amount");
 				next();
 			}
+			var id = req.params.id;
 
 			var opts = {
-				url: tradeURL+"/buy",
+				url: tradeURL+"/"+id,
 				json: true,
 				body: req.body,
-				method: "post",
+				method: "put",
 				headers: {
 					"Content-Type": "application/json"
 				}
 			}
+			
 			request(opts, function(err, resp, body){
 				if(!err && resp.statusCode === 200){
 					console.log("Success buying trade");
