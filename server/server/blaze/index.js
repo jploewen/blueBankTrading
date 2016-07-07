@@ -27,7 +27,9 @@ export default function() {
       return;
     }
     console.error("Problem buying trade: ", err);
+		if(!res.headersSent){
     res.status(500).send({"result": 1, "resultMessage": "Failed to get trades"});
+	}
 
   });
 
@@ -103,7 +105,9 @@ export default function() {
       return;
     }
     console.error("Problem buying trade: ", err);
-    res.status(500).send({"result": 1, "resultMessage": "Failed to return all trades"})
+		if(!res.headersSent){
+    	res.status(500).send({"result": 1, "resultMessage": "Failed to return all trades"})
+		}
   });
 
   Blaze.post('/rest/trades/buy',cors(), function(req,res,next){
@@ -113,7 +117,9 @@ export default function() {
       return;
     }
     console.error("Problem buying trade: ", err);
+		if(!res.headersSent){
     res.status(500).send({"result": 1, "resultMessage": "Failed to buy trade"})
+		}
   })
   return Blaze;
 }

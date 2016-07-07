@@ -42,7 +42,9 @@ export default function() {
 				}
 			}
 			console.log("Error ", err);
+			if(!res.headersSent){
 			res.status(500).send("Error "+ err);
+		}
 		});
 
 
@@ -77,7 +79,9 @@ export default function() {
 					}
 				}
 				console.log("Error ", err);
+				if(!res.headersSent){
 				res.status(500).send("Error "+ err);
+			}
 			});
 
 
@@ -115,9 +119,54 @@ export default function() {
 					}
 				}
 				console.error("Problem buying trade: ", err);
+				if(!res.headersSent){
 				res.status(500).send({"result": 1, "resultMessage": "Failed to buy trade"})
+			}
 			})
-		})
+		});
+
+		api.put('/v1/trades/:id', cors(),function(req,res,next){
+			console.log("Sending request to ", tradeURL);
+			console.log("/v1/trades/id body: ", req.body);
+			if(!req.params && !req.params.hasOwnProperty('id')){
+				console.error(("Required PUT attribute missing: id"));
+			}
+			if(!req.hasOwnProperty('body')){
+				console.error("Required PUT attributes missing");
+				next();
+			}
+			else if(!req.body.amount && !req.body.symbol){
+				console.error("Need required PUT attributes symbol and amount");
+				next();
+			}
+
+			var opts = {
+				url: tradeURL+"/buy",
+				json: true,
+				body: req.body,
+				method: "post",
+				headers: {
+					"Content-Type": "application/json"
+				}
+			}
+			request(opts, function(err, resp, body){
+				if(!err && resp.statusCode === 200){
+					console.log("Success buying trade");
+					var json = body;
+					console.log("RET: ", json);
+					if(!res.headersSent){
+						res.status(200).json(json);
+						return;
+					}
+				}
+				console.error("Problem buying trade: ", err);
+				if(!res.headersSent){
+				res.status(500).send({"result": 1, "resultMessage": "Failed to buy trade"})
+			}
+			})
+		});
+
+
 
 		api.get('/v1/mockbuy', cors(),function(req,res,next){
 			console.log("Sending POST to ", tradeURL , " from /v1/mockbuy");
@@ -146,7 +195,9 @@ export default function() {
 					}
 				}
 				console.error("Problem buying trade: ", err);
+				if(!res.headersSent){
 				res.status(500).send({"result": 1, "resultMessage": "Failed to buy trade"})
+			}
 			})
 		})
 
