@@ -93,11 +93,17 @@ export default function() {
 			console.log("/v1/trades/buy body: ", req.body);
 			if(!req.hasOwnProperty('body')){
 				console.error("Required post attributes missing");
-				next();
+				if(!res.headersSent){
+					res.status(500).send({"result": 1, "resultMessage": "Failed to buy trade"})
+				}
+				return next();
 			}
 			else if(!req.body.amount && !req.body.symbol){
 				console.error("Need required post attributes symbol and amount");
-				next();
+				if(!res.headersSent){
+				res.status(500).send({"result": 1, "resultMessage": "Failed to buy trade"})
+				}
+				return next();
 			}
 
 			var opts = {
@@ -136,11 +142,13 @@ export default function() {
 
 			if(!req.hasOwnProperty('body')){
 				console.error("Required PUT attributes missing");
-				next();
+				res.status(500).send({"result": 1, "resultMessage": "Failed to update trade Required PUT attributes missing"})
+				return next();
 			}
 			else if(!req.body.amount && !req.body.symbol){
 				console.error("Need required PUT attributes symbol and amount");
-				next();
+				res.status(500).send({"result": 1, "resultMessage": "Failed to update trade Need required PUT attributes symbol and amount"})
+				return next();
 			}
 			var id = req.params.id;
 
@@ -153,7 +161,7 @@ export default function() {
 					"Content-Type": "application/json"
 				}
 			}
-			
+
 			request(opts, function(err, resp, body){
 				if(!err && resp.statusCode === 200){
 					console.log("Success buying trade");
