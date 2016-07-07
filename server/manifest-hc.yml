@@ -7,4 +7,4 @@ applications:
   host: bbtrading-hc
   disk_quota: 1024M
   env:
-    GWURL:  http://9.37.134.39:9081
+    GWURL:  http://cap-sg-stage-2.integration.ibmcloud.com:15273
