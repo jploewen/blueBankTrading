@@ -111,13 +111,21 @@ export default function() {
       "resultLabel": "Success buying trade"});
     }
 
-  })
+  });
+	Blaze.post('/rest/trades/sell',cors(), function(req,res,next){
+    if(!res.headersSent){
+      res.status(200).json({"result": 0,"orderID": 31666,"orderStatus": "Success",
+      "resultLabel": "Success buying trade"});
+    }
+
+  });
 	Blaze.put('/rest/trades/:id',cors(), function(req,res,next){
     if(!res.headersSent){
       res.status(200).json({"result": 0,"orderID": 31666,"orderStatus": "Success",
       "resultLabel": "Success updating trade"});
     }
 
-  })
+  });
+
   return Blaze;
 }

@@ -89,7 +89,7 @@ export default function() {
 		});
 
 		api.post('/v1/trades/buy', cors(),function(req,res,next){
-			console.log("POST Sending request to ", tradeURL);
+			console.log("POST Sending request to ", tradeURL + "/buy");
 			console.log("POST /v1/trades/buy body: ", req.body, "\n req.BODY ", req.BODY);
 			//console.log("POST /v1/trades/buy req: ", req);
 			if(!req.hasOwnProperty('body')){
@@ -135,7 +135,7 @@ export default function() {
 		});
 
 		api.put('/v1/trades/:id', cors(),function(req,res,next){
-			console.log("PUT Sending request to ", tradeURL);
+			console.log("PUT Sending request to ", tradeURL + '/id' );
 			console.log("PUT /v1/trades/"+req.params.id+" body: ", req.body);
 			if(!req.params && !req.params.hasOwnProperty('id')){
 				console.error(("Required PUT attribute missing: id"));
@@ -175,6 +175,52 @@ export default function() {
 					return; //next();
 				}
 				console.error("Problem buying trade: ", err);
+				if(!res.headersSent){
+				res.status(500).send({"result": 1, "resultMessage": "Failed to buy trade"})
+			}
+			})
+		});
+
+		api.post('/v1/trades/sell', cors(),function(req,res,next){
+			console.log("POST Sending request to ", tradeURL + "/sell");
+			console.log("POST /v1/trades/sell body: ", req.body);
+			//console.log("POST /v1/trades/buy req: ", req);
+			if(!req.hasOwnProperty('body')){
+				console.error("Required post attributes missing");
+				if(!res.headersSent){
+					res.status(500).send({"result": 1, "resultMessage": "Failed to sell trade"})
+				}
+				return next();
+			}
+			else if(!req.body.amount && !req.body.symbol){
+				console.error("Need required post attributes symbol and amount");
+				if(!res.headersSent){
+				res.status(500).send({"result": 1, "resultMessage": "Failed to sell trade"})
+				}
+				return next();
+			}
+
+			var opts = {
+				url: tradeURL+"/sell",
+				json: true,
+				body: req.body,
+				method: "post",
+				headers: {
+					"Content-Type": "application/json"
+				}
+			}
+			request(opts, function(err, resp, body){
+				if(!err && resp.statusCode === 200){
+					console.log("Success selling trade");
+					var json = body;
+					console.log("RET: ", json);
+					if(!res.headersSent){
+						res.status(200).json(json);
+
+					}
+					return;
+				}
+				console.error("Problem selling trade: ", err);
 				if(!res.headersSent){
 				res.status(500).send({"result": 1, "resultMessage": "Failed to buy trade"})
 			}

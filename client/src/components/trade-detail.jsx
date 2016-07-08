@@ -65,7 +65,7 @@ var TradeDetail = React.createClass({
           <div>{"$" +trade.currentPrice.toFixed(2)}</div>
           <div className="btn-group">
             <button type="button" className="btn btn-info" onClick={this.handleBuyClick}>Buy</button>
-            <button type="button" className="btn btn-warning" onClick={this.handleBuyClick}>Sell</button>
+            <button type="button" className="btn btn-warning" onClick={this.handleSellClick}>Sell</button>
           </div>
         </div>
 
@@ -78,6 +78,10 @@ var TradeDetail = React.createClass({
   },
   handleBuyClick:function(event){
     api.buy({"amount": "4", "symbol": "s:0"});
+    this.openModal();
+  },
+  handleSellClick:function(event){
+    api.sell({"amount": "1", "symbol": "s:0"});
     this.openModal();
   },
   openModal:function(){
