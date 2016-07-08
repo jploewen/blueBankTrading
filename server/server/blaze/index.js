@@ -112,7 +112,7 @@ export default function() {
     }
 
   })
-	Blaze.put('/rest/details',cors(), function(req,res,next){
+	Blaze.put('/rest/trades/:id',cors(), function(req,res,next){
     if(!res.headersSent){
       res.status(200).json({"result": 0,"orderID": 31666,"orderStatus": "Success",
       "resultLabel": "Success updating trade"});

@@ -91,7 +91,7 @@ export default function() {
 		api.post('/v1/trades/buy', cors(),function(req,res,next){
 			console.log("POST Sending request to ", tradeURL);
 			console.log("POST /v1/trades/buy body: ", req.body, "\n req.BODY ", req.BODY);
-			console.log("POST /v1/trades/buy req: ", req);
+			//console.log("POST /v1/trades/buy req: ", req);
 			if(!req.hasOwnProperty('body')){
 				console.error("Required post attributes missing");
 				if(!res.headersSent){
@@ -136,7 +136,7 @@ export default function() {
 
 		api.put('/v1/trades/:id', cors(),function(req,res,next){
 			console.log("PUT Sending request to ", tradeURL);
-			console.log("PUT /v1/trades/id body: ", req.body);
+			console.log("PUT /v1/trades/"+req.params.id+" body: ", req.body);
 			if(!req.params && !req.params.hasOwnProperty('id')){
 				console.error(("Required PUT attribute missing: id"));
 			}
