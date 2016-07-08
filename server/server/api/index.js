@@ -90,7 +90,8 @@ export default function() {
 
 		api.post('/v1/trades/buy', cors(),function(req,res,next){
 			console.log("POST Sending request to ", tradeURL);
-			console.log("POST /v1/trades/buy body: ", req.body);
+			console.log("POST /v1/trades/buy body: ", req.body, "\n req.BODY ", req.BODY);
+			console.log("POST /v1/trades/buy req: ", req);
 			if(!req.hasOwnProperty('body')){
 				console.error("Required post attributes missing");
 				if(!res.headersSent){
