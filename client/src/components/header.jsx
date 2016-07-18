@@ -17,7 +17,7 @@ var header = React.createClass({
             <Link to="trades/">Investments</Link>
           </li>
           <li className="item">
-            <a href="http://bbtrading.mybluemix.net/images/mine.png">See Portfolios</a>
+            <a href="http://bbtrading.mybluemix.net/images/mine.html">See Portfolios</a>
           </li>
         </ul>
         <ul className="nav navbar-nav pull-right">
