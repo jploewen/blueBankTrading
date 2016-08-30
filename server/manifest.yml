@@ -4,7 +4,7 @@ applications:
   instances: 1
   domain: mybluemix.net
   name: 'Blue Bank Trading'
-  host: bbtrading
+  host: joes-bbtrading
   disk_quota: 1024M
   env:
-    GWURL: http://bbtrading.mybluemix.net
+    GWURL: http://joes-bbtrading.mybluemix.net
